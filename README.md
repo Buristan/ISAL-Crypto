@@ -175,7 +175,7 @@ To start benchmark run `make bench` in console.
 
 # AUTHOR
 
-Sergey Kaplun, &lt;burii@cpan.org&lt;gt>,
+Sergey Kaplun, <burii@cpan.org>,
 
 # ACKNOWLEDGEMENTS
 

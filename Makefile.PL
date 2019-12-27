@@ -5,6 +5,16 @@ use Config;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 
+# Check nasm and yasm versions support
+my $nasm_v = qx(nasm -v);
+$nasm_v =~ s{\A.*version (\d+)\.(\d+)\.(\d+).*}{sprintf "%d.%02d%02d", $1, $2, $3}e;
+my $yasm_v = qx(yasm --version | head -n1);
+$yasm_v =~ s{\A.*yasm (\d+)\.(\d+)\.(\d+).*}{sprintf "%d.%02d%02d", $1, $2, $3}e;
+if ($nasm_v < 2.1101 and $yasm_v < 1.0200) {
+	warn "nasm version >= 2.11.01 or yasm version >= 1.2.0 is required";
+	exit 0;
+}
+
 sub MY::postamble {
 q|
 BENCH_FILES = bench/*/*.pl

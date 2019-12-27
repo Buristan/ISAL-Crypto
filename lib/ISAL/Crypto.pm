@@ -77,7 +77,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = 0.01;
+our $VERSION = "0.01_1";
 
 require XSLoader;
 XSLoader::load('ISAL::Crypto', $VERSION);
@@ -346,7 +346,7 @@ To start benchmark run C<make bench> in console.
 
 =head1 AUTHOR
 
-Sergey Kaplun, E<lt>burii@cpan.org<gt>,
+Sergey Kaplun, E<lt>burii@cpan.orgE<gt>,
 
 =head1 ACKNOWLEDGEMENTS
 
