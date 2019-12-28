@@ -164,7 +164,7 @@ To start benchmark run `make bench` in console.
 
 # Prerequisites
 
-- Assembler: nasm v2.11.01 or later (nasm v2.13 or better suggested for building in AVX512 support) or yasm version 1.2.0 or later.
+- Assembler: nasm v2.13 or better (suggested for building in AVX512 support).
 - Compiler: gcc, clang or icc compiler.
 - Make: GNU 'make'
 - Optional: Building with autotools requires autoconf/automake packages.

@@ -35,8 +35,6 @@
 #define inline __inline
 #endif
 
-#ifdef HAVE_AS_KNOWS_AVX512
-
 static inline void hash_init_digest(MD5_WORD_T * digest);
 static inline uint32_t hash_pad(uint8_t padblock[MD5_BLOCK_SIZE * 2], uint64_t total_len);
 static MD5_HASH_CTX *md5_ctx_mgr_resubmit(MD5_HASH_CTX_MGR * mgr, MD5_HASH_CTX * ctx);
@@ -249,5 +247,3 @@ struct slver md5_ctx_mgr_submit_avx512_slver = { 0x018d, 0x00, 0x06 };
 
 struct slver md5_ctx_mgr_flush_avx512_slver_0600018e;
 struct slver md5_ctx_mgr_flush_avx512_slver = { 0x018e, 0x00, 0x06 };
-
-#endif // HAVE_AS_KNOWS_AVX512

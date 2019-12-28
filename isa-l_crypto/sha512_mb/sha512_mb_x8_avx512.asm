@@ -30,7 +30,6 @@
 %include "sha512_mb_mgr_datastruct.asm"
 %include "reg_sizes.asm"
 
-%ifdef HAVE_AS_KNOWS_AVX512
 default rel
 ;; code to compute quad SHA512 using AVX512
 ;; use ZMMs to tackle the larger digest size
@@ -630,10 +629,3 @@ TRANSPOSE8_PERM_INDEX_2: 	dq 0x0000000000000002
                                 dq 0x0000000000000007
                                 dq 0x000000000000000E
                                 dq 0x000000000000000F
-
-%else
-%ifidn __OUTPUT_FORMAT__, win64
-global no_sha512_mb_x8_avx512
-no_sha512_mb_x8_avx512:
-%endif
-%endif ; HAVE_AS_KNOWS_AVX512

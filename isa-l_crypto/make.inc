@@ -250,9 +250,13 @@ isa-l_crypto.h:
 
 
 # Target for install
+prefix = $(PREFIX)
+ifeq ($(prefix),)
 prefix = /usr/local
+endif
 install_dirs = $(prefix)/lib $(prefix)/include/isa-l_crypto
 $(install_dirs): ; mkdir -p $@
+
 install: $(sort $(extern_hdrs)) | $(install_dirs) $(lib_name) $(so_lib_name) isa-l_crypto.h
 	install -m 644 $(lib_name) $(prefix)/lib/libisal_crypto.a
 	install -m 644 $^ $(prefix)/include/isa-l_crypto/.

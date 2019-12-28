@@ -8,10 +8,20 @@ use Config;
 # Check nasm and yasm versions support
 my $nasm_v = qx(nasm -v);
 $nasm_v =~ s{\A.*version (\d+)\.(\d+)\.(\d+).*}{sprintf "%d.%02d%02d", $1, $2, $3}e;
-my $yasm_v = qx(yasm --version | head -n1);
-$yasm_v =~ s{\A.*yasm (\d+)\.(\d+)\.(\d+).*}{sprintf "%d.%02d%02d", $1, $2, $3}e;
-if ($nasm_v < 2.1101 and $yasm_v < 1.0200) {
-	warn "nasm version >= 2.11.01 or yasm version >= 1.2.0 is required";
+
+# Yasm don't support avx512 now
+# my $yasm_v = qx(yasm --version | head -n1);
+# $yasm_v =~ s{\A.*yasm (\d+)\.(\d+)\.(\d+).*}{sprintf "%d.%02d%02d", $1, $2, $3}e;
+
+if ($nasm_v < 2.13) {
+	warn "nasm version >= 2.13.00 is required";
+	exit 0;
+}
+
+my $autoreconf = qx(autoreconf --version);
+unless ($autoreconf) {
+	# TODO add not only reconf building
+	warn "autotools required for building";
 	exit 0;
 }
 
@@ -61,17 +71,28 @@ WriteMakefile(
 				last;
 			}
 		}
-		$opt{CFLAGS} //= "-O2 -fPIC -g ";
+		$opt{CFLAGS} //= "-O2 -fPIC". (-d ".git" ? " -g " : "");
 		
 		my $libdir = "$installsitearch/ISAL/Crypto/lib/";
+		# TODO not only autotools supports - require to reworking isa-l_crypto/Makefile.unx
+		$opt{USEAUTOTOOLS} = 1;
+		my $installation = $opt{USEAUTOTOOLS} ?
+			qq|
+				./autogen.sh &&
+				CFLAGS="$opt{CFLAGS}" ./configure --prefix=$installsitearch/ISAL/Crypto &&
+				make -j &&
+				# make test; # ENV_sm3 supported only in the newest libssl
+				make install &&
+				make clean;
+			|
+			: qq|
+				make -j -f Makefile.unx &&
+				PREFIX=$installsitearch/ISAL/Crypto make -f Makefile.unx install &&
+				make clean;
+			|;
 		my $f = system qq|
 			cd ./isa-l_crypto/ &&
-			./autogen.sh &&
-			CFLAGS="$opt{CFLAGS}" ./configure --prefix=$installsitearch/ISAL/Crypto &&
-			make -j &&
-			# make test; # ENV_sm3 supported only in the newest libssl
-			make install &&
-			make clean;
+			$installation
 		|;
 		
 		die "Failed to build sources!" if $f;
@@ -80,8 +101,8 @@ WriteMakefile(
 			INC => "-I. -I$installsitearch/ISAL/Crypto -I$installsitearch",
 			LDFROM => "Crypto.o",
 			LIBS => "-L$libdir -lisal_crypto",
-			CCFLAGS => "$opt{CFLAGS} -Wall"
-			           ." -I$installsitearch/ISAL/Crypto/include"
+			CCFLAGS => " $opt{CFLAGS} -Wall"
+			           ." -I$installsitearch/ISAL/Crypto/include",
 		}
 	},
 	PL_FILES => {

@@ -77,7 +77,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = "0.01_1";
+our $VERSION = "0.01_2";
 
 require XSLoader;
 XSLoader::load('ISAL::Crypto', $VERSION);
@@ -322,7 +322,7 @@ To start benchmark run C<make bench> in console.
 
 =over 4
 
-=item Assembler: nasm v2.11.01 or later (nasm v2.13 or better suggested for building in AVX512 support) or yasm version 1.2.0 or later.
+=item Assembler: nasm v2.13 or better (suggested for building in AVX512 support).
 
 =item Compiler: gcc, clang or icc compiler.
 

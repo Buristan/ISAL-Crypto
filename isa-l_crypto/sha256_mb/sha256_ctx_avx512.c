@@ -35,8 +35,6 @@
 # define inline __inline
 #endif
 
-#ifdef HAVE_AS_KNOWS_AVX512
-
 static inline void hash_init_digest(SHA256_WORD_T * digest);
 static inline uint32_t hash_pad(uint8_t padblock[SHA256_BLOCK_SIZE * 2], uint64_t total_len);
 static SHA256_HASH_CTX *sha256_ctx_mgr_resubmit(SHA256_HASH_CTX_MGR * mgr,
@@ -254,5 +252,3 @@ struct slver sha256_ctx_mgr_submit_avx512_slver = { 0x015b, 0x00, 0x06 };
 
 struct slver sha256_ctx_mgr_flush_avx512_slver_0600015c;
 struct slver sha256_ctx_mgr_flush_avx512_slver = { 0x015c, 0x00, 0x06 };
-
-#endif // HAVE_AS_KNOWS_AVX512

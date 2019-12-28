@@ -197,11 +197,9 @@ extern sha512_ctx_mgr_init_base
 extern sha512_ctx_mgr_submit_base
 extern sha512_ctx_mgr_flush_base
 
-%ifdef HAVE_AS_KNOWS_AVX512
- extern sha512_ctx_mgr_init_avx512
- extern sha512_ctx_mgr_submit_avx512
- extern sha512_ctx_mgr_flush_avx512
-%endif
+extern sha512_ctx_mgr_init_avx512
+extern sha512_ctx_mgr_submit_avx512
+extern sha512_ctx_mgr_flush_avx512
 
 extern sha512_ctx_mgr_init_sb_sse4
 extern sha512_ctx_mgr_submit_sb_sse4
@@ -215,35 +213,21 @@ mbin_interface sha512_ctx_mgr_init
 mbin_interface sha512_ctx_mgr_submit
 mbin_interface sha512_ctx_mgr_flush
 
-%ifdef HAVE_AS_KNOWS_AVX512
- ; Reuse mbin_dispatch_init6 through replacing base by sse version
- mbin_dispatch_init6_avoton sha512_ctx_mgr_init, sha512_ctx_mgr_init_base, \
-			sha512_ctx_mgr_init_sse, sha512_ctx_mgr_init_avx, \
-			sha512_ctx_mgr_init_avx2, sha512_ctx_mgr_init_avx512, \
-			sha512_ctx_mgr_init_sb_sse4
+; Reuse mbin_dispatch_init6 through replacing base by sse version
+mbin_dispatch_init6_avoton sha512_ctx_mgr_init, sha512_ctx_mgr_init_base, \
+		sha512_ctx_mgr_init_sse, sha512_ctx_mgr_init_avx, \
+		sha512_ctx_mgr_init_avx2, sha512_ctx_mgr_init_avx512, \
+		sha512_ctx_mgr_init_sb_sse4
 
- mbin_dispatch_init6_avoton sha512_ctx_mgr_submit, sha512_ctx_mgr_submit_base, \
-			sha512_ctx_mgr_submit_sse, sha512_ctx_mgr_submit_avx, \
-			sha512_ctx_mgr_submit_avx2, sha512_ctx_mgr_submit_avx512, \
-			sha512_ctx_mgr_submit_sb_sse4
+mbin_dispatch_init6_avoton sha512_ctx_mgr_submit, sha512_ctx_mgr_submit_base, \
+		sha512_ctx_mgr_submit_sse, sha512_ctx_mgr_submit_avx, \
+		sha512_ctx_mgr_submit_avx2, sha512_ctx_mgr_submit_avx512, \
+		sha512_ctx_mgr_submit_sb_sse4
 
- mbin_dispatch_init6_avoton sha512_ctx_mgr_flush, sha512_ctx_mgr_flush_base, \
-			sha512_ctx_mgr_flush_sse, sha512_ctx_mgr_flush_avx, \
-			sha512_ctx_mgr_flush_avx2, sha512_ctx_mgr_flush_avx512, \
-			sha512_ctx_mgr_flush_sb_sse4
-%else
- mbin_dispatch_init_avoton sha512_ctx_mgr_init, sha512_ctx_mgr_init_sse, \
-			sha512_ctx_mgr_init_avx, sha512_ctx_mgr_init_avx2, \
-			sha512_ctx_mgr_init_sb_sse4
-
- mbin_dispatch_init_avoton sha512_ctx_mgr_submit, sha512_ctx_mgr_submit_sse, \
-			sha512_ctx_mgr_submit_avx, sha512_ctx_mgr_submit_avx2, \
-			sha512_ctx_mgr_submit_sb_sse4
-
- mbin_dispatch_init_avoton sha512_ctx_mgr_flush, sha512_ctx_mgr_flush_sse, \
-			sha512_ctx_mgr_flush_avx, sha512_ctx_mgr_flush_avx2, \
-			sha512_ctx_mgr_flush_sb_sse4
-%endif
+mbin_dispatch_init6_avoton sha512_ctx_mgr_flush, sha512_ctx_mgr_flush_base, \
+		sha512_ctx_mgr_flush_sse, sha512_ctx_mgr_flush_avx, \
+		sha512_ctx_mgr_flush_avx2, sha512_ctx_mgr_flush_avx512, \
+		sha512_ctx_mgr_flush_sb_sse4
 
 
 ;;;       func				core, ver, snum

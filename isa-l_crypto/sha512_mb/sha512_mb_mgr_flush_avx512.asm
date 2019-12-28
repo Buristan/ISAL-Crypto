@@ -31,7 +31,6 @@
 %include "sha512_mb_mgr_datastruct.asm"
 %include "reg_sizes.asm"
 
-%ifdef HAVE_AS_KNOWS_AVX512
 extern sha512_mb_x8_avx512
 default rel
 
@@ -257,10 +256,3 @@ lane_4:     dq  4
 lane_5:     dq  5
 lane_6:     dq  6
 lane_7:     dq  7
-
-%else
-%ifidn __OUTPUT_FORMAT__, win64
-global no_sha512_mb_mgr_flush_avx512
-no_sha512_mb_mgr_flush_avx512:
-%endif
-%endif ; HAVE_AS_KNOWS_AVX512

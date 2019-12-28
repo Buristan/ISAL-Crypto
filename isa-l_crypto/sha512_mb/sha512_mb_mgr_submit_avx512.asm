@@ -31,7 +31,6 @@
 %include "sha512_mb_mgr_datastruct.asm"
 %include "reg_sizes.asm"
 
-%ifdef HAVE_AS_KNOWS_AVX512
 extern sha512_mb_x8_avx512
 
 %ifidn __OUTPUT_FORMAT__, elf64
@@ -270,10 +269,3 @@ align 32
 clear_low_nibble:	; mgr len element 0xnnnnnnnn 0000000m, nnnnnnnn is blocknum, m is index
 	dq 0xFFFFFFFF00000000, 0x0000000000000000
 	dq 0xFFFFFFFF00000000, 0x0000000000000000
-
-%else
-%ifidn __OUTPUT_FORMAT__, win64
-global no_sha512_mb_mgr_submit_avx512
-no_sha512_mb_mgr_submit_avx512:
-%endif
-%endif ; HAVE_AS_KNOWS_AVX512
