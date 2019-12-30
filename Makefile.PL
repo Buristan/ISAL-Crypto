@@ -74,19 +74,20 @@ WriteMakefile(
 		$opt{CFLAGS} //= "-O2 -fPIC". (-d ".git" ? " -g " : "");
 		
 		my $libdir = "$installsitearch/ISAL/Crypto/lib/";
+		$opt{MAKEFLAGS} //= ""; # compatibility with solaris dmake
 		# TODO not only autotools supports - require to reworking isa-l_crypto/Makefile.unx
 		$opt{USEAUTOTOOLS} = 1;
 		my $installation = $opt{USEAUTOTOOLS} ?
 			qq|
 				./autogen.sh &&
 				CFLAGS="$opt{CFLAGS}" ./configure --prefix=$installsitearch/ISAL/Crypto &&
-				make -j &&
+				make $opt{MAKEFLAGS} &&
 				# make test; # ENV_sm3 supported only in the newest libssl
 				make install &&
 				make clean;
 			|
 			: qq|
-				make -j -f Makefile.unx &&
+				make $opt{MAKEFLAGS} -f Makefile.unx &&
 				PREFIX=$installsitearch/ISAL/Crypto make -f Makefile.unx install &&
 				make clean;
 			|;
